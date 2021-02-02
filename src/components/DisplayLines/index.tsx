@@ -104,18 +104,18 @@ class DisplayLines extends React.Component<IProps, IState> {
         sendString: [...prevState.sendString, line],
       }),
       () => {
-        /* eslint-disable */
         // If all of the lines have finished updating we will send the new word order
         if (count === lineCount) {
           // Remove previous word and add new word order to state
           this.setState(
-            {
+            (prevState) => ({
               sendString: [
-                ...this.state.sendString.slice(lineCount, lineCount * 2),
+                ...prevState.sendString.slice(lineCount, lineCount * 2),
               ],
-            },
+            }),
             () => {
               // Send new word order to API
+              /* eslint-disable */
               this.sendLinesToAPI(this.state.sendString);
               /* eslint-disable */
             }
