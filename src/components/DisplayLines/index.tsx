@@ -115,9 +115,8 @@ class DisplayLines extends React.Component<IProps, IState> {
             }),
             () => {
               // Send new word order to API
-              /* eslint-disable */
-              this.sendLinesToAPI(this.state.sendString);
-              /* eslint-disable */
+              const { sendString } = this.state;
+              this.sendLinesToAPI(sendString);
             }
           );
         }
