@@ -94,32 +94,36 @@ class DisplayLines extends React.Component<IProps, IState> {
     this.setState({ sendString: DisplayLines.lines() });
   }
 
-  updateLines(line: string) {
+  updateLines = (line: string) => {
     // Count how many times the lines update - on final update we will make our API call
     const count = this.countLineUpdates();
-    const { sendString, lineCount } = this.state;
 
+    const { lineCount } = this.state;
     this.setState(
       (prevState) => ({
         sendString: [...prevState.sendString, line],
       }),
       () => {
+        /* eslint-disable */
         // If all of the lines have finished updating we will send the new word order
         if (count === lineCount) {
           // Remove previous word and add new word order to state
           this.setState(
             {
-              sendString: [...sendString.slice(lineCount, lineCount * 2)],
+              sendString: [
+                ...this.state.sendString.slice(lineCount, lineCount * 2),
+              ],
             },
             () => {
               // Send new word order to API
-              this.sendLinesToAPI(sendString);
+              this.sendLinesToAPI(this.state.sendString);
+              /* eslint-disable */
             }
           );
         }
       }
     );
-  }
+  };
 
   sendLinesToAPI(word: Array<string>) {
     this.setState({ loading: true });
@@ -171,7 +175,7 @@ class DisplayLines extends React.Component<IProps, IState> {
                 key={line}
                 className={Line}
                 line={line}
-                updateLines={() => this.updateLines.bind(this)}
+                updateLines={this.updateLines}
               />
             ))}
           </Draggable>
