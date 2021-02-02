@@ -15,6 +15,10 @@ interface IState {
 }
 
 class DisplayLines extends React.Component<IProps, IState> {
+  static lines() {
+    return DisplayLines.splitString(text.body, 80, true, false);
+  }
+
   static splitString(
     string: any,
     limit: number,
@@ -26,10 +30,10 @@ class DisplayLines extends React.Component<IProps, IState> {
 
     while (remainingString.length > limit) {
       // Each line ends at the first space found before the length limit
-      let lineEnd = remainingString.substr(0, limit).lastIndexOf(" ");
+      let lineEnd = remainingString.substr(0, limit).lastIndexOf(" ") + 1;
 
       // If we don't want to cut off any words, line ends at the first space after the limit
-      if (allowBreaks === false) {
+      if (!allowBreaks) {
         lineEnd = lineEnd <= 0 ? remainingString.indexOf(" ") : lineEnd;
       }
 
@@ -61,10 +65,6 @@ class DisplayLines extends React.Component<IProps, IState> {
     // Add the last line
     lines.push(remainingString);
     return lines;
-  }
-
-  static lines() {
-    return DisplayLines.splitString(text.body, 80, true, false);
   }
 
   // This is a simple closure function to count how many times updateLine fires
